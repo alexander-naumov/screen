@@ -1,0 +1,59 @@
+dist:     jammy
+language: c
+
+os:
+  - linux
+
+arch:
+  - amd64
+  - arm64
+  - ppc64le
+
+compiler:
+  - gcc
+  - clang
+
+addons:
+  apt:
+    packages:
+      - autoconf
+      - automake
+
+before_script:
+  - sudo apt-get update
+  - sudo apt-get install autoconf
+
+script:
+  - autoconf --version
+  - export AUTOCONF_VERSION=2.71
+  - autoconf --version
+  - arch
+  - cd src
+  - ./autogen.sh
+  - ./configure CFLAGS='-Wall'
+  - make
+  - ./screen -v
+  - ./screen -h
+  - ./screen -S -d -m bash -c 'ping -c 8 localhost'; true
+  - ./screen -ls; true
+  - ./screen -S shortname -d -m bash -c 'ping -c 8 localhost'
+  - ./screen -ls
+  - ./screen -S shortname -X sessionname; true
+  - make clean
+  - ./configure CFLAGS='-Wall -DDEBUG'
+  - make
+  - ./screen -v
+  - ./screen -h
+  - ./screen -S -d -m bash -c 'ping -c 8 localhost'; true
+  - ./screen -ls; true
+  - ./screen -S shortnameDEBUG -d -m bash -c 'ping -c 8 localhost'
+  - ./screen -ls
+  - ./screen -S shortnameDEBUG -X sessionname; true
+  - ./screen -ls; true
+  - ./screen -S shortnameDEBUG -X sessionname testtest
+  - ./screen -r; true
+  - ./screen -S averyverylongsesssionnameaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -d -m bash -c 'ping -c 8 localhost'; true
+  - ./screen -ls; true
+  - ls -la /tmp/debug/ ; true
+  - cat /tmp/debug/SCREEN* ; true
+  - man ./doc/screen.1
