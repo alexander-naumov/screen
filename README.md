@@ -13,11 +13,14 @@ There is a scrollback history buffer for each virtual terminal and
 a copy-and-paste mechanism that allows moving text regions between
 windows.
 
-## Build & Install
+## Build
 ```sh
-cd src
+git clone https://github.com/alexander-naumov/screen
+cd screen/src
 ./autogen.sh
 ./configure CFLAGS='-Wall -DDEBUG'
 make
+./screen -v
+./screen -h
 ```
 
